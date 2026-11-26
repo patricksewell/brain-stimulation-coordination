@@ -1,6 +1,6 @@
 # Brain Stimulation Increases Strategic Risk-Taking and Coordination
 
-Data and materials for:
+Data, materials, and replication code for:
 
 > Sewell, P., Díez-Rodríguez, E., Soto-León, V., Apesteguia, J., and Oliviero, A. *Brain Stimulation Increases Strategic Risk-Taking and Coordination.* Manuscript under review at PNAS.
 
@@ -13,6 +13,8 @@ The R code in `code/` reproduces every table, figure and statistic in the paper 
 ## Contents
 
 ```
+LICENSE                           MIT License (code)
+LICENSE-DATA                      CC BY 4.0 (data, materials, and outputs)
 data/
   experiment1/
     exp1_choices.csv              one row per participant x game x round (2,400 rows)
@@ -180,3 +182,7 @@ Each script can also be run on its own (from the repository root). The scripts w
 **Not reproduced from these files.** Session dates and start times, and participants' payments, come from the lab records and are not part of the public data.
 
 **Software.** R 4.5.0 with dplyr, tidyr, sandwich, lme4, nlme, numDeriv, ggplot2, patchwork, scales, ggraph and tidygraph. The figure scripts embed fonts with Ghostscript (`gs` must be on the path) and should be run in a UTF-8 locale. `output/sessionInfo.txt` lists the exact package versions used. A full run takes about 5 minutes, mostly for the bootstrap tests with 999,999 draws.
+
+## License
+
+The code in `code/` is released under the [MIT License](LICENSE). The data, materials, and outputs (`data/`, `materials/`, `output/`) are released under [CC BY 4.0](LICENSE-DATA). Please cite the article above when using them.
