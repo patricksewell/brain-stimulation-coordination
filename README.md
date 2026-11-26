@@ -6,7 +6,9 @@ Data and materials for:
 
 The study reports two sham-controlled, double-blind experiments in which transcranial static magnetic stimulation (tSMS) was applied over the left dorsolateral prefrontal cortex (F3) before participants played repeated coordination games. Both experiments were run in Spanish, in oTree, at the Hospital Nacional de Parapléjicos (Toledo, Spain).
 
-The replication code will be added to this repository.
+The R code in `code/` reproduces every table, figure and statistic in the paper and its SI Appendix from these data (see [Replication code](#replication-code)).
+
+**Correction to the SI Appendix.** Fig. S3d of the submitted SI Appendix shows Matching Pennies payoffs of +30 and −30. The payoffs used in Experiment 1 were +20 and −20: these were shown on the decision screens and paid in every session, as recorded in `exp1_choices.csv` (`game` = `MP`). No result in the paper or the SI Appendix depends on these values. The figure will be corrected in the next version of the SI Appendix.
 
 ## Contents
 
@@ -19,6 +21,9 @@ data/
     exp2_rounds.csv               one row per participant x game x round (1,040 rows)
     exp2_participants.csv         one row per participant, derived measures (52 rows)
     exp2_participants_wide.csv    one row per participant, item-level responses (52 rows)
+  blinding_check.csv              both experiments: actual condition and end-of-session guess (112 rows)
+code/                             R scripts that reproduce the paper (see below)
+output/                           tables, figures and statistics written by the code
 materials/
   experiment2/
     Experiment2_instructions_screens.pdf   every screen in the original Spanish, with English translations
@@ -126,6 +131,54 @@ The participant measures below are also attached to every row.
 
 The item-level responses behind `exp2_participants.csv`, in oTree's naming (`app.round.player.field`): the baseline survey (`falk_survey_updated.*`; buttons 1, 2, 3, 4, 6, 7, and 9 correspond to the items above), the lottery (`icl.*`), patience (`time_elicitation_task.*`), BRET (`BRET_trial.*`, `BRET.*`), cognitive reflection (`crt_long.*`), reciprocity (`reciprocity.*`), the two games (`stag_actionsflipped.*` = SH, `stag_risk_dom.*` = SH RD; `cooperate` = 1 for Stag), and payments.
 
+## Blinding check (both experiments)
+
+### `blinding_check.csv`
+
+At the end of each session, participants were asked whether they believed they had received active stimulation, sham stimulation, or did not know. The answers were recorded in the lab logs.
+
+| Variable | Meaning |
+|---|---|
+| `experiment` | 1 or 2 |
+| `session_id`, `participant_id` | the same anonymized identifiers as in that experiment's data files |
+| `stim` | 1 = active stimulation, 0 = sham |
+| `guess` | `active`, `sham`, or `unsure` (the participant said they did not know) |
+
 ## Materials
 
 `materials/experiment2/Experiment2_instructions_screens.pdf` shows every screen of Experiment 2 in the original Spanish, in the order of the experiment, with an English translation of each. The SI Appendix of the paper (Section 6) gives a shorter translation of the instructions.
+
+## Replication code
+
+From the repository root, run
+
+```
+Rscript code/run_all.R
+```
+
+In RStudio, open `brain-stimulation-coordination.Rproj` (this sets the working directory to the repository root) and run `source("code/run_all.R")`. From any other R session, first set the working directory to the repository root with `setwd()`.
+
+Each script can also be run on its own (from the repository root). The scripts write LaTeX tables to `output/tables/`, figures to `output/figures/`, and the statistics reported in the text to `output/numbers/` (one CSV per script, with the place in the paper where each number appears).
+
+| Script | Reproduces |
+|---|---|
+| `00_setup.R` | shared setup: packages, data loading, session-clustered inference, wild cluster bootstrap |
+| `01_balance.R` | Table S1 |
+| `02_treatment_effects.R` | main treatment effects; Table S3; the direct lottery comparison |
+| `03_robustness.R` | omitting sessions or pairs, collection wave, AR(1) errors, trends over rounds (SI 3.2) |
+| `04_experiment1.R` | Table S2 and the Experiment 1 results |
+| `05_beliefs.R` | Tables S4 and S5; first-round beliefs; the mixed-strategy benchmark (SI 3.3) |
+| `06_structural.R` | Table S6, the random parameter model (SI 3.4) |
+| `07_belief_updating.R` | Table S7 |
+| `08_dynamics.R` | Tables S8–S10, Fig. S5, and the switching-versus-persistence contrast (SI 3.5) |
+| `09_risk_measures.R` | lottery and BRET results, risk types, Holm's correction across the five measures, correlations and attenuation (SI 3.6) |
+| `10_figures.R` | Figs. 2–4 and Figs. S4, S6 and S7 |
+| `11_blinding.R` | the blinding check: guesses by actual condition, and the χ² test (SI 2.3) |
+
+**Inference.** Treatment was assigned by session, so standard errors are clustered by session (13 clusters in Experiment 2, CR1 correction, t distribution with 12 degrees of freedom; 30 pair-sessions in Experiment 1). Wild cluster bootstrap P values impose the null and use Webb six-point weights. Every bootstrap uses a fixed seed, so the code reproduces the published P values exactly. Several analyses sort participants, and the sort order fixes the order of the session clusters in the bootstrap; `00_setup.R` therefore lists the participants in the order of their original identifiers (the list carries no other information).
+
+**Lottery choices.** The structural model uses the five choices of the lottery task. The data hold the final score (1–32), which determines the whole sequence of choices; `06_structural.R` rebuilds the sequence from it.
+
+**Not reproduced from these files.** Session dates and start times, and participants' payments, come from the lab records and are not part of the public data.
+
+**Software.** R 4.5.0 with dplyr, tidyr, sandwich, lme4, nlme, numDeriv, ggplot2, patchwork, scales, ggraph and tidygraph. The figure scripts embed fonts with Ghostscript (`gs` must be on the path) and should be run in a UTF-8 locale. `output/sessionInfo.txt` lists the exact package versions used. A full run takes about 5 minutes, mostly for the bootstrap tests with 999,999 draws.

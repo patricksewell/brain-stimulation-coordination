@@ -1,0 +1,7 @@
+"sample","condition","guessed_active","guessed_sham","unsure","total"
+"Experiment 1","active",9,8,13,30
+"Experiment 1","sham",7,6,17,30
+"Experiment 2","active",7,5,12,24
+"Experiment 2","sham",8,11,9,28
+"Both experiments","active",16,13,25,54
+"Both experiments","sham",15,17,26,58
