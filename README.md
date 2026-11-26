@@ -25,9 +25,7 @@ data/
 code/                             R scripts that reproduce the paper (see below)
 output/                           tables, figures and statistics written by the code
 materials/
-  experiment2/
-    Experiment2_instructions_screens.pdf   every screen in the original Spanish, with English translations
-    screens/screen_01.png ... screen_43.png  the same screens as image files, in the order of the experiment
+  Experiment2_instructions_screens.pdf   every screen of Experiment 2 in the original Spanish, with English translations
 ```
 
 ## Anonymization
@@ -146,7 +144,7 @@ At the end of each session, participants were asked whether they believed they h
 
 ## Materials
 
-`materials/experiment2/Experiment2_instructions_screens.pdf` shows every screen of Experiment 2 in the original Spanish, in the order of the experiment, with an English translation of each. The SI Appendix of the paper (Section 6) gives a shorter translation of the instructions.
+`materials/Experiment2_instructions_screens.pdf` shows every screen of Experiment 2 in the original Spanish, in the order of the experiment, with an English translation of each. The SI Appendix of the paper (Section 6) gives a shorter translation of the instructions.
 
 ## Replication code
 
